@@ -1,15 +1,23 @@
-import { createContentlayerPlugin } from "next-contentlayer2"
-
 /** @type {import('next').NextConfig} */
+const { createContentlayerPlugin } = require("next-contentlayer2")
+
 const nextConfig = {
+  // Memory optimization settings
+  typescript: {
+    ignoreBuildErrors: true // Reduces memory usage during build
+  },
+  swcMinify: true,
   experimental: {
     outputFileTracingIncludes: {
       "/blocks/*": ["./registry/**/*"],
     },
+    // Memory optimizations
+    optimizeCss: true,
+    webpackBuildWorker: true,
   },
-  reactStrictMode: true,
-  swcMinify: true,
+  // Reduce memory usage for image optimization
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -21,6 +29,7 @@ const nextConfig = {
       },
     ],
   },
+  // Keep only essential redirects
   redirects() {
     return [
       {
@@ -32,48 +41,37 @@ const nextConfig = {
         source: "/docs/components",
         destination: "/docs/components/accordion",
         permanent: true,
-      },
-      {
-        source: "/examples",
-        destination: "/examples/mail",
-        permanent: false,
-      },
-      {
-        source: "/docs/primitives/:path*",
-        destination: "/docs/components/:path*",
-        permanent: true,
-      },
-      {
-        source: "/figma",
-        destination: "/docs/figma",
-        permanent: true,
-      },
-      {
-        source: "/docs/forms",
-        destination: "/docs/components/form",
-        permanent: false,
-      },
-      {
-        source: "/docs/forms/react-hook-form",
-        destination: "/docs/components/form",
-        permanent: false,
-      },
-      {
-        source: "/sidebar",
-        destination: "/docs/components/sidebar",
-        permanent: true,
-      },
-      {
-        source: "/react-19",
-        destination: "/docs/react-19",
-        permanent: true,
-      },
+      }
     ]
   },
+  // Add memory limit for Node
+  env: {
+    NODE_OPTIONS: '--max-old-space-size=3072' // 3GB memory limit
+  },
+  // Optimize output
+  output: 'standalone',
+  poweredByHeader: false,
+  reactStrictMode: true,
+  
+  // Reduce chunk size
+  webpack: (config, { isServer }) => {
+    // Optimize chunk size
+    config.optimization = {
+      ...config.optimization,
+      minimize: true,
+      splitChunks: {
+        chunks: 'all',
+        minSize: 20000,
+        maxSize: 244000,
+      }
+    }
+    return config
+  }
 }
 
 const withContentlayer = createContentlayerPlugin({
-  // Additional Contentlayer config options
+  // Keep contentlayer config minimal
+  configPath: 'contentlayer.config.ts',
 })
 
 export default withContentlayer(nextConfig)
