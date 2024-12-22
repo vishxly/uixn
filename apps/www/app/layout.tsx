@@ -1,6 +1,6 @@
 import "@/styles/globals.css"
 import { Metadata, Viewport } from "next"
-
+//
 import { META_THEME_COLORS, siteConfig } from "@/config/site"
 import { fontMono, fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
@@ -104,7 +104,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableColorScheme
           >
             <div vaul-drawer-wrapper="">
-              <div className="relative flex min-h-svh flex-col bg-background">
+              <div className="relative flex flex-col min-h-svh bg-background">
                 {children}
               </div>
             </div>
