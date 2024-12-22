@@ -2,8 +2,14 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { type DialogProps } from "@radix-ui/react-dialog"
-import { Circle, File, Laptop, Moon, Sun } from "lucide-react"
+import { DialogProps } from "@radix-ui/react-alert-dialog"
+import {
+  CircleIcon,
+  FileIcon,
+  LaptopIcon,
+  MoonIcon,
+  SunIcon,
+} from "@radix-ui/react-icons"
 import { useTheme } from "next-themes"
 
 import { docsConfig } from "@/config/docs"
@@ -55,7 +61,7 @@ export function CommandMenu({ ...props }: DialogProps) {
       <Button
         variant="outline"
         className={cn(
-          "relative h-8 w-full justify-start rounded-[0.5rem] bg-muted/50 text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-56 xl:w-64"
+          "relative h-8 w-full justify-start rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64"
         )}
         onClick={() => setOpen(true)}
         {...props}
@@ -81,7 +87,7 @@ export function CommandMenu({ ...props }: DialogProps) {
                     runCommand(() => router.push(navItem.href as string))
                   }}
                 >
-                  <File />
+                  <FileIcon className="mr-2 h-4 w-4" />
                   {navItem.title}
                 </CommandItem>
               ))}
@@ -97,7 +103,7 @@ export function CommandMenu({ ...props }: DialogProps) {
                   }}
                 >
                   <div className="mr-2 flex h-4 w-4 items-center justify-center">
-                    <Circle className="h-3 w-3" />
+                    <CircleIcon className="h-3 w-3" />
                   </div>
                   {navItem.title}
                 </CommandItem>
@@ -107,15 +113,15 @@ export function CommandMenu({ ...props }: DialogProps) {
           <CommandSeparator />
           <CommandGroup heading="Theme">
             <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
-              <Sun />
+              <SunIcon className="mr-2 h-4 w-4" />
               Light
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
-              <Moon />
+              <MoonIcon className="mr-2 h-4 w-4" />
               Dark
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
-              <Laptop />
+              <LaptopIcon className="mr-2 h-4 w-4" />
               System
             </CommandItem>
           </CommandGroup>

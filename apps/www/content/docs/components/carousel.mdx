@@ -7,11 +7,7 @@ links:
   api: https://www.embla-carousel.com/api
 ---
 
-<ComponentPreview
-  name="carousel-demo"
-  title="Carousel"
-  description="A carousel with 5 items and a previous and next button."
-/>
+<ComponentPreview name="carousel-demo" />
 
 ## About
 
@@ -29,7 +25,7 @@ The carousel component is built using the [Embla Carousel](https://www.embla-car
 <TabsContent value="cli">
 
 ```bash
-npx shadcn@latest add carousel
+npx shadcn-ui@latest add carousel
 ```
 
 </TabsContent>
@@ -86,11 +82,7 @@ import {
 
 To set the size of the items, you can use the `basis` utility class on the `<CarouselItem />`.
 
-<ComponentPreview
-  name="carousel-size"
-  title="Carousel"
-  description="A carousel with 3 active items of equal size."
-/>
+<ComponentPreview name="carousel-size" />
 
 ```tsx title="Example" showLineNumbers {4-6}
 // 33% of the carousel width.
@@ -128,11 +120,7 @@ You can always adjust this in your own project if you need to.
 
 </Callout>
 
-<ComponentPreview
-  name="carousel-spacing"
-  title="Carousel"
-  description="A carousel with 3 items with a spacing of 1rem."
-/>
+<ComponentPreview name="carousel-spacing" />
 
 ```tsx title="Example" showLineNumbers /-ml-4/ /pl-4/
 <Carousel>
@@ -158,11 +146,7 @@ You can always adjust this in your own project if you need to.
 
 Use the `orientation` prop to set the orientation of the carousel.
 
-<ComponentPreview
-  name="carousel-orientation"
-  title="Carousel"
-  description="A vertical carousel."
-/>
+<ComponentPreview name="carousel-orientation" />
 
 ```tsx showLineNumbers /vertical | horizontal/
 <Carousel orientation="vertical | horizontal">
@@ -197,11 +181,7 @@ You can pass options to the carousel using the `opts` prop. See the [Embla Carou
 
 Use a state and the `setApi` props to get an instance of the carousel API.
 
-<ComponentPreview
-  name="carousel-api"
-  title="Carousel"
-  description="A carousel with a slide counter."
-/>
+<ComponentPreview name="carousel-api" />
 
 ```tsx showLineNumbers {1,4,22}
 import { type CarouselApi } from "@/components/ui/carousel"
@@ -292,10 +272,6 @@ export function Example() {
 }
 ```
 
-<ComponentPreview
-  name="carousel-plugin"
-  title="Carousel"
-  description="A carousel with the autoplay plugin."
-/>
+<ComponentPreview name="carousel-plugin" />
 
 See the [Embla Carousel docs](https://www.embla-carousel.com/api/plugins/) for more information on using plugins.

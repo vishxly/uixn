@@ -13,7 +13,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/registry/new-york/ui/tooltip"
-import { Style } from "@/registry/registry-styles"
+import { Block } from "@/registry/schema"
+import { Style } from "@/registry/styles"
 
 type Size = "default" | "icon"
 
@@ -39,7 +40,7 @@ function V0Tooltip({
         {style === "new-york" ? (
           <>Not available in New York</>
         ) : (
-          <>Open in v0</>
+          <>Edit in v0</>
         )}
       </TooltipContent>
     </Tooltip>
@@ -47,28 +48,60 @@ function V0Tooltip({
 }
 
 export function V0Button({
-  name,
+  block,
   size = "default",
   disabled,
   className,
   ...props
 }: {
-  name: string
+  block: Pick<Block, "name" | "description" | "code" | "style">
   size?: Size
 } & ButtonProps) {
-  const [url, setUrl] = React.useState("https://ui.shadcn.com")
-
-  React.useEffect(() => {
-    setUrl(window.location.href)
-  }, [])
-
+  if (block.style === "new-york") {
+    return (
+      <V0Tooltip size={size} style={block.style}>
+        <Button
+          aria-label="Edit in v0"
+          className={cn(
+            "z-50 h-[calc(theme(spacing.7)_-_1px)] gap-1 rounded-[6px] bg-black px-3 text-xs text-white hover:bg-black hover:text-white dark:bg-white dark:text-black",
+            size === "icon" && "h-7 w-7 p-0",
+            className
+          )}
+          onClick={() => {
+            toast("New York not available.", {
+              description: (
+                <div className="flex items-center">
+                  Only the Default style is available in{" "}
+                  <V0Logo className="ml-1 text-foreground" aria-label="v0" />.
+                </div>
+              ),
+            })
+          }}
+          disabled={
+            block.style === "new-york" && size === "icon" ? true : disabled
+          }
+          {...props}
+        >
+          {size === "icon" ? (
+            <V0Logo className="h-4 w-4" />
+          ) : (
+            <>
+              Edit in <V0Logo />
+            </>
+          )}
+        </Button>
+      </V0Tooltip>
+    )
+  }
   return (
     <form
       action={async () => {
         try {
           const result = await editInV0({
-            name,
-            url,
+            name: block.name,
+            description: block.description || "",
+            code: block.code,
+            style: block.style,
           })
 
           if (result?.error) {
@@ -92,7 +125,7 @@ export function V0Button({
         }
       }}
     >
-      <Form size={size} className={className} disabled={disabled} {...props} />
+      <Form size={size} {...props} />
     </form>
   )
 }
@@ -100,19 +133,17 @@ export function V0Button({
 function Form({
   disabled,
   size = "default",
-  className,
   ...props
-}: Omit<React.ComponentProps<typeof V0Button>, "name">) {
+}: Omit<React.ComponentProps<typeof V0Button>, "block">) {
   const { pending } = useFormStatus()
 
   return (
     <V0Tooltip size={size}>
       <Button
-        aria-label="Open in v0"
+        aria-label="Edit in v0"
         className={cn(
           "z-50 h-[calc(theme(spacing.7)_-_1px)] gap-1 rounded-[6px] bg-black px-3 text-xs text-white hover:bg-black hover:text-white dark:bg-white dark:text-black",
-          size === "icon" && "h-7 w-7 p-0",
-          className
+          size === "icon" && "h-7 w-7 p-0"
         )}
         disabled={disabled || pending}
         {...props}
@@ -128,7 +159,7 @@ function Form({
         ) : (
           <>
             {pending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-            Open in <V0Logo />
+            Edit in <V0Logo />
           </>
         )}
       </Button>

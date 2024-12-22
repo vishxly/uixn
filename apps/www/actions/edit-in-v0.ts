@@ -1,66 +1,30 @@
 "use server"
 
 import { track } from "@vercel/analytics/server"
-import { capitalCase } from "change-case"
 
-import { getRegistryItem } from "@/lib/registry"
-import { Style } from "@/registry/registry-styles"
+const EDIT_IN_V0_SOURCE = "ui.shadcn.com"
 
 export async function editInV0({
   name,
+  description,
   style,
-  url,
+  code,
 }: {
   name: string
-  style?: Style["name"]
-  url: string
+  description: string
+  style: string
+  code: string
 }) {
-  style = style ?? "new-york"
   try {
-    const registryItem = await getRegistryItem(name, style)
-
-    if (!registryItem) {
-      return { error: "Something went wrong. Please try again later." }
-    }
-
     await track("edit_in_v0", {
       name,
-      title: registryItem.name,
-      description: registryItem.description ?? registryItem.name,
+      description,
       style,
-      url,
     })
 
-    // Remove v0 prefix from the name
-    registryItem.name = registryItem.name.replace(/^v0-/, "")
-
-    // Replace `@/registry/new-york/` in files.
-    registryItem.files = registryItem.files?.map((file) => {
-      if (file.content?.includes("@/registry/new-york/ui")) {
-        file.content = file.content?.replaceAll(
-          "@/registry/new-york/ui",
-          "@/components/ui"
-        )
-      }
-      return file
-    })
-
-    const payload = {
-      version: 2,
-      payload: registryItem,
-      source: {
-        title: "shadcn/ui",
-        url,
-      },
-      meta: {
-        project: capitalCase(name.replace(/\d+/g, "")),
-        file: `${name}.tsx`,
-      },
-    }
-
-    const response = await fetch(`${process.env.V0_URL}/chat/api/open-in-v0`, {
+    const response = await fetch(`${process.env.V0_URL}/api/edit`, {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ description, code, source: EDIT_IN_V0_SOURCE }),
       headers: {
         "x-v0-edit-secret": process.env.V0_EDIT_SECRET!,
         "x-vercel-protection-bypass":
@@ -74,19 +38,11 @@ export async function editInV0({
         throw new Error("Unauthorized")
       }
 
-      console.error(response.statusText)
-
       throw new Error("Something went wrong. Please try again later.")
     }
 
-    const result = await response.json()
-
-    return {
-      ...result,
-      url: `${process.env.V0_URL}/chat/api/open-in-v0/${result.id}`,
-    }
+    return await response.json()
   } catch (error) {
-    console.error(error)
     if (error instanceof Error) {
       return { error: error.message }
     }

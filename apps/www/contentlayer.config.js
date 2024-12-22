@@ -1,9 +1,10 @@
-import { getHighlighter } from "@shikijs/compat"
+import path from "path"
+import { getHighlighter, loadTheme } from "@shikijs/compat"
 import {
   defineDocumentType,
   defineNestedType,
   makeSource,
-} from "contentlayer2/source-files"
+} from "contentlayer/source-files"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import rehypePrettyCode from "rehype-pretty-code"
 import rehypeSlug from "rehype-slug"
@@ -113,8 +114,12 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          theme: "github-dark",
-          getHighlighter,
+          getHighlighter: async () => {
+            const theme = await loadTheme(
+              path.join(process.cwd(), "/lib/themes/dark.json")
+            )
+            return await getHighlighter({ theme })
+          },
           onVisitLine(node) {
             // Prevent lines from collapsing in `display: grid` mode, and allow empty
             // lines to be copy/pasted

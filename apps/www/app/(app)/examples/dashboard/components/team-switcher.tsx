@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown, PlusCircle } from "lucide-react"
+import {
+  CaretSortIcon,
+  CheckIcon,
+  PlusCircledIcon,
+} from "@radix-ui/react-icons"
 
 import { cn } from "@/lib/utils"
 import {
@@ -101,13 +105,13 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
             {selectedTeam.label}
-            <ChevronsUpDown className="ml-auto opacity-50" />
+            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
-            <CommandInput placeholder="Search team..." />
             <CommandList>
+              <CommandInput placeholder="Search team..." />
               <CommandEmpty>No team found.</CommandEmpty>
               {groups.map((group) => (
                 <CommandGroup key={group.label} heading={group.label}>
@@ -129,9 +133,9 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                         <AvatarFallback>SC</AvatarFallback>
                       </Avatar>
                       {team.label}
-                      <Check
+                      <CheckIcon
                         className={cn(
-                          "ml-auto",
+                          "ml-auto h-4 w-4",
                           selectedTeam.value === team.value
                             ? "opacity-100"
                             : "opacity-0"
@@ -152,7 +156,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                       setShowNewTeamDialog(true)
                     }}
                   >
-                    <PlusCircle className="h-5 w-5" />
+                    <PlusCircledIcon className="mr-2 h-5 w-5" />
                     Create Team
                   </CommandItem>
                 </DialogTrigger>

@@ -6,11 +6,7 @@ links:
   doc: https://react-day-picker.js.org
 ---
 
-<ComponentPreview
-  name="calendar-demo"
-  title="Calendar"
-  description="A calendar showing the current date."
-/>
+<ComponentPreview name="calendar-demo" />
 
 ## About
 
@@ -27,7 +23,7 @@ The `Calendar` component is built on top of [React DayPicker](https://react-day-
 <TabsContent value="cli">
 
 ```bash
-npx shadcn@latest add calendar
+npx shadcn-ui@latest add calendar
 ```
 
 </TabsContent>
@@ -88,14 +84,3 @@ You can use the `<Calendar>` component to build a date picker. See the [Date Pic
 ### Form
 
 <ComponentPreview name="calendar-form" />
-
-## Changelog
-
-### 11-03-2024 day_outside color
-
-- Changed the color of the `day_outside` class to the following to improve contrast:
-
-  ```tsx showLineNumbers title="calendar.tsx"
-  "day_outside:
-        "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
-  ```

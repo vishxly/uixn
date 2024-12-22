@@ -52,7 +52,7 @@ interface MailProps {
 export function Mail({
   accounts,
   mails,
-  defaultLayout = [20, 32, 48],
+  defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
 }: MailProps) {
@@ -64,7 +64,7 @@ export function Mail({
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
-          document.cookie = `react-resizable-panels:layout:mail=${JSON.stringify(
+          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
             sizes
           )}`
         }}
@@ -76,16 +76,10 @@ export function Mail({
           collapsible={true}
           minSize={15}
           maxSize={20}
-          onCollapse={() => {
-            setIsCollapsed(true)
+          onCollapse={(collapsed) => {
+            setIsCollapsed(collapsed)
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              true
-            )}`
-          }}
-          onResize={() => {
-            setIsCollapsed(false)
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              false
+              collapsed
             )}`
           }}
           className={cn(
@@ -218,7 +212,7 @@ export function Mail({
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>
+        <ResizablePanel defaultSize={defaultLayout[2]}>
           <MailDisplay
             mail={mails.find((item) => item.id === mail.selected) || null}
           />

@@ -2,9 +2,8 @@
 
 import * as React from "react"
 import { Dialog } from "@radix-ui/react-dialog"
-import { MoreHorizontal } from "lucide-react"
+import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 
-import { toast } from "@/registry/new-york/hooks/use-toast"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -31,6 +30,7 @@ import {
 } from "@/registry/new-york/ui/dropdown-menu"
 import { Label } from "@/registry/new-york/ui/label"
 import { Switch } from "@/registry/new-york/ui/switch"
+import { toast } from "@/registry/new-york/ui/use-toast"
 
 export function PresetActions() {
   const [open, setIsOpen] = React.useState(false)
@@ -40,9 +40,9 @@ export function PresetActions() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon">
+          <Button variant="secondary">
             <span className="sr-only">Actions</span>
-            <MoreHorizontal />
+            <DotsHorizontalIcon className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
